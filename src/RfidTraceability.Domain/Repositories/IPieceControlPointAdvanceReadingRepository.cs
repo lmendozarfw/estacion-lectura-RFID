@@ -4,12 +4,15 @@ namespace RfidTraceability.Domain.Repositories;
 
 public interface IPieceControlPointAdvanceReadingRepository : IRepository<PieceControlPointAdvanceReading>
 {
-    Task<PieceControlPointAdvanceReading?> GetByPieceAndControlPointAsync(
-        string rfidPieceId,
-        string controlPointId,
+    Task<PieceControlPointAdvanceReading?> GetBySourceEventIdAsync(
+        string sourceEventId,
         CancellationToken cancellationToken = default);
 
-    Task<bool> ExistsForPieceAndControlPointAsync(
+    Task<bool> ExistsBySourceEventIdAsync(
+        string sourceEventId,
+        CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<PieceControlPointAdvanceReading>> ListByPieceAndControlPointAsync(
         string rfidPieceId,
         string controlPointId,
         CancellationToken cancellationToken = default);

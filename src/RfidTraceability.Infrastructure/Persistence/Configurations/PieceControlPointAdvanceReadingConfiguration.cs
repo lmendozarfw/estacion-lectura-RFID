@@ -8,7 +8,7 @@ public class PieceControlPointAdvanceReadingConfiguration : IEntityTypeConfigura
 {
     public void Configure(EntityTypeBuilder<PieceControlPointAdvanceReading> builder)
     {
-        builder.ToTable("lecturas_avance_pieza_punto_control");
+        builder.ToTable("avances_pieza_punto_control");
 
         builder.HasKey(x => x.Id);
 
@@ -17,6 +17,11 @@ public class PieceControlPointAdvanceReadingConfiguration : IEntityTypeConfigura
             .HasMaxLength(36)
             .ValueGeneratedNever();
 
+        builder.Property(x => x.SourceEventId)
+            .HasColumnName("id_evento_origen")
+            .HasMaxLength(100)
+            .IsRequired();
+
         builder.Property(x => x.RfidPieceId)
             .HasColumnName("id_pieza_rfid")
             .HasMaxLength(36)
@@ -24,6 +29,11 @@ public class PieceControlPointAdvanceReadingConfiguration : IEntityTypeConfigura
 
         builder.Property(x => x.ControlPointId)
             .HasColumnName("id_punto_control")
+            .HasMaxLength(36)
+            .IsRequired();
+
+        builder.Property(x => x.RfidReaderId)
+            .HasColumnName("id_lector_rfid")
             .HasMaxLength(36)
             .IsRequired();
 
@@ -42,7 +52,18 @@ public class PieceControlPointAdvanceReadingConfiguration : IEntityTypeConfigura
             .HasForeignKey(x => x.ControlPointId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasIndex(x => new { x.RfidPieceId, x.ControlPointId })
+        builder.HasOne(x => x.RfidReader)
+            .WithMany(x => x.AdvanceReadings)
+            .HasForeignKey(x => x.RfidReaderId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(x => x.SourceEventId)
             .IsUnique();
+
+        builder.HasIndex(x => new { x.RfidPieceId, x.Date });
+
+        builder.HasIndex(x => new { x.ControlPointId, x.Date });
+
+        builder.HasIndex(x => new { x.RfidReaderId, x.Date });
     }
 }

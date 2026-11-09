@@ -22,7 +22,26 @@ public class SkuConfiguration : IEntityTypeConfiguration<Sku>
             .HasMaxLength(50)
             .IsRequired();
 
-        builder.HasIndex(x => x.Code)
+        builder.Property(x => x.Description)
+            .HasColumnName("descripcion")
+            .HasMaxLength(500);
+
+        builder.Property(x => x.Active)
+            .HasColumnName("activo")
+            .HasDefaultValue(true)
+            .IsRequired();
+
+        builder.Property(x => x.OrganizationId)
+            .HasColumnName("id_organizacion")
+            .HasMaxLength(36)
+            .IsRequired();
+
+        builder.HasOne(x => x.Organization)
+            .WithMany(x => x.Skus)
+            .HasForeignKey(x => x.OrganizationId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(x => new { x.OrganizationId, x.Code })
             .IsUnique();
     }
 }

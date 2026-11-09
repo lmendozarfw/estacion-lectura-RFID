@@ -8,7 +8,7 @@ public interface IProgramRepository : IRepository<Program>
 
     Task<IReadOnlyList<Program>> ListByPurchaseOrderAsync(string purchaseOrderId, CancellationToken cancellationToken = default);
 
-    Task<Program?> GetWithLotsAsync(string id, CancellationToken cancellationToken = default);
+    Task<Program?> GetWithBlocksAsync(string id, CancellationToken cancellationToken = default);
 
     Task<Program?> GetWithGoalsAsync(string id, CancellationToken cancellationToken = default);
 }

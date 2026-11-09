@@ -27,24 +27,14 @@ public class RfidPieceConfiguration : IEntityTypeConfiguration<RfidPiece>
             .HasMaxLength(36)
             .IsRequired();
 
-        builder.Property(x => x.BlockCode)
-            .HasColumnName("codigo_bloque")
-            .HasMaxLength(50)
-            .IsRequired();
-
         builder.Property(x => x.LotId)
             .HasColumnName("id_lote")
             .HasMaxLength(36)
             .IsRequired();
 
-        builder.Property(x => x.SizeCode)
-            .HasColumnName("codigo_talla")
-            .HasMaxLength(20)
-            .IsRequired();
-
         builder.Property(x => x.SideCode)
             .HasColumnName("codigo_lado")
-            .HasMaxLength(20)
+            .HasMaxLength(2)
             .IsRequired();
 
         builder.HasOne(x => x.Sku)
@@ -58,6 +48,9 @@ public class RfidPieceConfiguration : IEntityTypeConfiguration<RfidPiece>
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasIndex(x => x.Epc)
+            .IsUnique();
+
+        builder.HasIndex(x => new { x.LotId, x.SideCode })
             .IsUnique();
     }
 }

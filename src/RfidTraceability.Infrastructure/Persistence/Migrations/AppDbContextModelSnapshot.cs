@@ -22,25 +22,7 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("RfidTraceability.Domain.Entities.ControlPoint", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("nombre");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("puntos_control", (string)null);
-                });
-
-            modelBuilder.Entity("RfidTraceability.Domain.Entities.Lot", b =>
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.Block", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(36)
@@ -53,10 +35,6 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("codigo");
 
-                    b.Property<int>("ExpectedPieces")
-                        .HasColumnType("integer")
-                        .HasColumnName("cantidad_piezas");
-
                     b.Property<string>("ProgramId")
                         .IsRequired()
                         .HasMaxLength(36)
@@ -68,7 +46,154 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                     b.HasIndex("ProgramId", "Code")
                         .IsUnique();
 
+                    b.ToTable("bloques", (string)null);
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.BusinessUnit", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(36)
+                        .HasColumnType("character varying(36)")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Active")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true)
+                        .HasColumnName("activo");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("codigo");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("nombre");
+
+                    b.Property<string>("OrganizationId")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("character varying(36)")
+                        .HasColumnName("id_organizacion");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId", "Code")
+                        .IsUnique();
+
+                    b.ToTable("unidades_negocio", (string)null);
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.ControlPoint", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(36)
+                        .HasColumnType("character varying(36)")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Active")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true)
+                        .HasColumnName("activo");
+
+                    b.Property<string>("BusinessUnitId")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("character varying(36)")
+                        .HasColumnName("id_unidad_negocio");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("codigo");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("descripcion");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("nombre");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BusinessUnitId", "Code")
+                        .IsUnique();
+
+                    b.ToTable("puntos_control", (string)null);
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.Lot", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(36)
+                        .HasColumnType("character varying(36)")
+                        .HasColumnName("id");
+
+                    b.Property<string>("BlockId")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("character varying(36)")
+                        .HasColumnName("id_bloque");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("codigo");
+
+                    b.Property<int>("ExpectedPairs")
+                        .HasColumnType("integer")
+                        .HasColumnName("cantidad_pares");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlockId", "Code")
+                        .IsUnique();
+
                     b.ToTable("lotes", (string)null);
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.Organization", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(36)
+                        .HasColumnType("character varying(36)")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Active")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true)
+                        .HasColumnName("activo");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("codigo");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("nombre");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("organizaciones", (string)null);
                 });
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.PieceControlPointAdvanceReading", b =>
@@ -94,14 +219,30 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(36)")
                         .HasColumnName("id_pieza_rfid");
 
+                    b.Property<string>("RfidReaderId")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("character varying(36)")
+                        .HasColumnName("id_lector_rfid");
+
+                    b.Property<string>("SourceEventId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("id_evento_origen");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ControlPointId");
-
-                    b.HasIndex("RfidPieceId", "ControlPointId")
+                    b.HasIndex("SourceEventId")
                         .IsUnique();
 
-                    b.ToTable("lecturas_avance_pieza_punto_control", (string)null);
+                    b.HasIndex("ControlPointId", "Date");
+
+                    b.HasIndex("RfidPieceId", "Date");
+
+                    b.HasIndex("RfidReaderId", "Date");
+
+                    b.ToTable("avances_pieza_punto_control", (string)null);
                 });
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.Program", b =>
@@ -111,15 +252,27 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(36)")
                         .HasColumnName("id");
 
+                    b.Property<DateOnly?>("ActualEndDate")
+                        .HasColumnType("date")
+                        .HasColumnName("fecha_fin_real");
+
+                    b.Property<DateOnly?>("ActualStartDate")
+                        .HasColumnType("date")
+                        .HasColumnName("fecha_inicio_real");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
                         .HasColumnName("codigo");
 
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("fecha_fin");
+                    b.Property<DateOnly?>("PlannedEndDate")
+                        .HasColumnType("date")
+                        .HasColumnName("fecha_fin_planificada");
+
+                    b.Property<DateOnly?>("PlannedStartDate")
+                        .HasColumnType("date")
+                        .HasColumnName("fecha_inicio_planificada");
 
                     b.Property<string>("PurchaseOrderId")
                         .IsRequired()
@@ -127,9 +280,17 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(36)")
                         .HasColumnName("id_orden_compra");
 
-                    b.Property<DateTime?>("StartDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("fecha_inicio");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("estado")
+                        .HasDefaultValueSql("'PLANIFICADO'");
+
+                    b.Property<int>("TargetQuantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("cantidad_objetivo");
 
                     b.HasKey("Id");
 
@@ -173,7 +334,7 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                     b.HasIndex("ProgramId", "ControlPointId", "Date")
                         .IsUnique();
 
-                    b.ToTable("meta_programa", (string)null);
+                    b.ToTable("metas_programa", (string)null);
                 });
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.PurchaseOrder", b =>
@@ -189,13 +350,35 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("codigo");
 
-                    b.Property<DateTime?>("Date")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<DateOnly?>("Date")
+                        .HasColumnType("date")
                         .HasColumnName("fecha");
+
+                    b.Property<string>("ExternalId")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("id_externo");
+
+                    b.Property<string>("OrganizationId")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("character varying(36)")
+                        .HasColumnName("id_organizacion");
+
+                    b.Property<string>("Origin")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("origen")
+                        .HasDefaultValueSql("'LOCAL'");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
+                    b.HasIndex("OrganizationId", "Code")
+                        .IsUnique();
+
+                    b.HasIndex("OrganizationId", "ExternalId")
                         .IsUnique();
 
                     b.ToTable("ordenes_compra", (string)null);
@@ -207,12 +390,6 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .HasMaxLength(36)
                         .HasColumnType("character varying(36)")
                         .HasColumnName("id");
-
-                    b.Property<string>("BlockCode")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("codigo_bloque");
 
                     b.Property<string>("Epc")
                         .IsRequired()
@@ -228,15 +405,9 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("SideCode")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)")
                         .HasColumnName("codigo_lado");
-
-                    b.Property<string>("SizeCode")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasColumnName("codigo_talla");
 
                     b.Property<string>("SkuId")
                         .IsRequired()
@@ -249,14 +420,15 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                     b.HasIndex("Epc")
                         .IsUnique();
 
-                    b.HasIndex("LotId");
-
                     b.HasIndex("SkuId");
+
+                    b.HasIndex("LotId", "SideCode")
+                        .IsUnique();
 
                     b.ToTable("piezas_rfid", (string)null);
                 });
 
-            modelBuilder.Entity("RfidTraceability.Domain.Entities.Sku", b =>
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.RfidReader", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(36)
@@ -269,23 +441,117 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("codigo");
 
+                    b.Property<string>("ControlPointId")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("character varying(36)")
+                        .HasColumnName("id_punto_control");
+
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("numero_serie");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("estado")
+                        .HasDefaultValueSql("'ACTIVO'");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
+                    b.HasIndex("SerialNumber")
+                        .IsUnique();
+
+                    b.HasIndex("ControlPointId", "Code")
+                        .IsUnique();
+
+                    b.ToTable("lectores_rfid", (string)null);
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.Sku", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(36)
+                        .HasColumnType("character varying(36)")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Active")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true)
+                        .HasColumnName("activo");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("codigo");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("descripcion");
+
+                    b.Property<string>("OrganizationId")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("character varying(36)")
+                        .HasColumnName("id_organizacion");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId", "Code")
                         .IsUnique();
 
                     b.ToTable("skus", (string)null);
                 });
 
-            modelBuilder.Entity("RfidTraceability.Domain.Entities.Lot", b =>
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.Block", b =>
                 {
                     b.HasOne("RfidTraceability.Domain.Entities.Program", "Program")
-                        .WithMany("Lots")
+                        .WithMany("Blocks")
                         .HasForeignKey("ProgramId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Program");
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.BusinessUnit", b =>
+                {
+                    b.HasOne("RfidTraceability.Domain.Entities.Organization", "Organization")
+                        .WithMany("BusinessUnits")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.ControlPoint", b =>
+                {
+                    b.HasOne("RfidTraceability.Domain.Entities.BusinessUnit", "BusinessUnit")
+                        .WithMany("ControlPoints")
+                        .HasForeignKey("BusinessUnitId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("BusinessUnit");
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.Lot", b =>
+                {
+                    b.HasOne("RfidTraceability.Domain.Entities.Block", "Block")
+                        .WithMany("Lots")
+                        .HasForeignKey("BlockId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Block");
                 });
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.PieceControlPointAdvanceReading", b =>
@@ -302,9 +568,17 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("RfidTraceability.Domain.Entities.RfidReader", "RfidReader")
+                        .WithMany("AdvanceReadings")
+                        .HasForeignKey("RfidReaderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("ControlPoint");
 
                     b.Navigation("RfidPiece");
+
+                    b.Navigation("RfidReader");
                 });
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.Program", b =>
@@ -337,6 +611,17 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                     b.Navigation("Program");
                 });
 
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.PurchaseOrder", b =>
+                {
+                    b.HasOne("RfidTraceability.Domain.Entities.Organization", "Organization")
+                        .WithMany("PurchaseOrders")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+                });
+
             modelBuilder.Entity("RfidTraceability.Domain.Entities.RfidPiece", b =>
                 {
                     b.HasOne("RfidTraceability.Domain.Entities.Lot", "Lot")
@@ -356,11 +641,45 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                     b.Navigation("Sku");
                 });
 
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.RfidReader", b =>
+                {
+                    b.HasOne("RfidTraceability.Domain.Entities.ControlPoint", "ControlPoint")
+                        .WithMany("Readers")
+                        .HasForeignKey("ControlPointId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ControlPoint");
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.Sku", b =>
+                {
+                    b.HasOne("RfidTraceability.Domain.Entities.Organization", "Organization")
+                        .WithMany("Skus")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.Block", b =>
+                {
+                    b.Navigation("Lots");
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.BusinessUnit", b =>
+                {
+                    b.Navigation("ControlPoints");
+                });
+
             modelBuilder.Entity("RfidTraceability.Domain.Entities.ControlPoint", b =>
                 {
                     b.Navigation("AdvanceReadings");
 
                     b.Navigation("Goals");
+
+                    b.Navigation("Readers");
                 });
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.Lot", b =>
@@ -368,11 +687,20 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                     b.Navigation("RfidPieces");
                 });
 
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.Organization", b =>
+                {
+                    b.Navigation("BusinessUnits");
+
+                    b.Navigation("PurchaseOrders");
+
+                    b.Navigation("Skus");
+                });
+
             modelBuilder.Entity("RfidTraceability.Domain.Entities.Program", b =>
                 {
-                    b.Navigation("Goals");
+                    b.Navigation("Blocks");
 
-                    b.Navigation("Lots");
+                    b.Navigation("Goals");
                 });
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.PurchaseOrder", b =>
@@ -381,6 +709,11 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                 });
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.RfidPiece", b =>
+                {
+                    b.Navigation("AdvanceReadings");
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.RfidReader", b =>
                 {
                     b.Navigation("AdvanceReadings");
                 });

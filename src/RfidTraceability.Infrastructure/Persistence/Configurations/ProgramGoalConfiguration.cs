@@ -8,7 +8,7 @@ public class ProgramGoalConfiguration : IEntityTypeConfiguration<ProgramGoal>
 {
     public void Configure(EntityTypeBuilder<ProgramGoal> builder)
     {
-        builder.ToTable("meta_programa");
+        builder.ToTable("metas_programa");
 
         builder.HasKey(x => x.Id);
 
@@ -27,13 +27,13 @@ public class ProgramGoalConfiguration : IEntityTypeConfiguration<ProgramGoal>
             .HasMaxLength(36)
             .IsRequired();
 
-        builder.Property(x => x.TargetQuantity)
-            .HasColumnName("cantidad_meta")
-            .IsRequired();
-
         builder.Property(x => x.Date)
             .HasColumnName("fecha")
             .HasColumnType("date")
+            .IsRequired();
+
+        builder.Property(x => x.TargetQuantity)
+            .HasColumnName("cantidad_meta")
             .IsRequired();
 
         builder.HasOne(x => x.Program)

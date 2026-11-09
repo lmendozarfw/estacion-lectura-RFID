@@ -22,21 +22,21 @@ public class LotConfiguration : IEntityTypeConfiguration<Lot>
             .HasMaxLength(50)
             .IsRequired();
 
-        builder.Property(x => x.ProgramId)
-            .HasColumnName("id_programa")
+        builder.Property(x => x.ExpectedPairs)
+            .HasColumnName("cantidad_pares")
+            .IsRequired();
+
+        builder.Property(x => x.BlockId)
+            .HasColumnName("id_bloque")
             .HasMaxLength(36)
             .IsRequired();
 
-        builder.Property(x => x.ExpectedPieces)
-            .HasColumnName("cantidad_piezas")
-            .IsRequired();
-
-        builder.HasOne(x => x.Program)
+        builder.HasOne(x => x.Block)
             .WithMany(x => x.Lots)
-            .HasForeignKey(x => x.ProgramId)
+            .HasForeignKey(x => x.BlockId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasIndex(x => new { x.ProgramId, x.Code })
+        builder.HasIndex(x => new { x.BlockId, x.Code })
             .IsUnique();
     }
 }

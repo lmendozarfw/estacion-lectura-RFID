@@ -2,18 +2,14 @@ namespace RfidTraceability.Domain.Entities;
 
 public class PieceControlPointAdvanceReading
 {
-    public Guid Id { get; private set; } = Guid.NewGuid();
-    public Guid RfidPieceId { get; private set; }
-    public Guid ControlPointId { get; private set; }
-    public DateTime Date { get; private set; }
+    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public string SourceEventId { get; set; } = string.Empty;
+    public string RfidPieceId { get; set; } = string.Empty;
+    public string ControlPointId { get; set; } = string.Empty;
+    public string RfidReaderId { get; set; } = string.Empty;
+    public DateTime Date { get; set; } = DateTime.UtcNow;
 
     public RfidPiece RfidPiece { get; set; } = null!;
     public ControlPoint ControlPoint { get; set; } = null!;
-
-    public PieceControlPointAdvanceReading(Guid rfidPieceId, Guid controlPointId)
-    {
-        RfidPieceId = DomainGuard.GuidNotEmpty(rfidPieceId, nameof(rfidPieceId));
-        ControlPointId = DomainGuard.GuidNotEmpty(controlPointId, nameof(controlPointId));
-        Date = DateTime.UtcNow;
-    }
+    public RfidReader RfidReader { get; set; } = null!;
 }
