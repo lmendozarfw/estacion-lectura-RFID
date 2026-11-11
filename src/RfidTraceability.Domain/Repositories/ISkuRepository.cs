@@ -4,9 +4,9 @@ namespace RfidTraceability.Domain.Repositories;
 
 public interface ISkuRepository : IRepository<Sku>
 {
-    Task<Sku?> GetByCodeAsync(string organizationId, string code, CancellationToken cancellationToken = default);
+    Task<Sku?> GetByCodeAsync(Guid organizationId, string code, CancellationToken cancellationToken = default);
 
-    Task<bool> ExistsByCodeAsync(string organizationId, string code, CancellationToken cancellationToken = default);
+    Task<bool> ExistsByCodeAsync(Guid organizationId, string code, CancellationToken cancellationToken = default);
 
-    Task<IReadOnlyList<Sku>> ListByOrganizationAsync(string organizationId, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<Sku>> ListByOrganizationAsync(Guid organizationId, CancellationToken cancellationToken = default);
 }

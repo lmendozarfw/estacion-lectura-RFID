@@ -33,6 +33,16 @@ public static class DomainGuard
         return value.Value;
     }
 
+    public static DateOnly NormalizedDateOnly(DateOnly value, string paramName)
+    {
+        if (value == DateOnly.MinValue)
+        {
+            throw new ArgumentException("The date is not valid.", paramName);
+        }
+
+        return value;
+    }
+
     public static Guid GuidNotEmpty(Guid value, string paramName)
     {
         if (value == Guid.Empty)
@@ -50,4 +60,14 @@ public static class DomainGuard
         }
         return value;
     }
+
+    public static TEnum IsInEnum<TEnum>(TEnum valor, string paramName) where TEnum : struct, Enum
+    {
+        var isValid = Enum.IsDefined(typeof(TEnum), valor);
+        if (!isValid)
+        {
+            throw new ArgumentException($"La propiedad {paramName} no es un valor aceptado.", paramName);
+        }
+        return valor;
+    }    
 }

@@ -8,5 +8,5 @@ public interface IOrganizationRepository : IRepository<Organization>
 
     Task<bool> ExistsByCodeAsync(string code, CancellationToken cancellationToken = default);
 
-    Task<Organization?> GetWithBusinessUnitsAsync(string id, CancellationToken cancellationToken = default);
+    Task<Organization?> GetWithBusinessUnitsAsync(Guid id, CancellationToken cancellationToken = default);
 }

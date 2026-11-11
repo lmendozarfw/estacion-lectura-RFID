@@ -2,6 +2,6 @@ namespace RfidTraceability.Domain.Enums;
 
 public enum DataOrigin
 {
-    Local,
-    Erp
+    Local = 0,
+    Erp = 1
 }

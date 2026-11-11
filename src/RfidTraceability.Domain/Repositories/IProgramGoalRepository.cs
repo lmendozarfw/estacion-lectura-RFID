@@ -5,28 +5,28 @@ namespace RfidTraceability.Domain.Repositories;
 public interface IProgramGoalRepository : IRepository<ProgramGoal>
 {
     Task<ProgramGoal?> GetByProgramControlPointAndDateAsync(
-        string programId,
-        string controlPointId,
+        Guid programId,
+        Guid controlPointId,
         DateOnly date,
         CancellationToken cancellationToken = default);
 
     Task<bool> ExistsForProgramControlPointAndDateAsync(
-        string programId,
-        string controlPointId,
+        Guid programId,
+        Guid controlPointId,
         DateOnly date,
         CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<ProgramGoal>> ListByProgramAsync(
-        string programId,
+        Guid programId,
         CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<ProgramGoal>> ListByProgramAndDateAsync(
-        string programId,
+        Guid programId,
         DateOnly date,
         CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<ProgramGoal>> ListByProgramAndControlPointAsync(
-        string programId,
-        string controlPointId,
+        Guid programId,
+        Guid controlPointId,
         CancellationToken cancellationToken = default);
 }

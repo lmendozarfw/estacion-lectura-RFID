@@ -10,7 +10,7 @@ public interface IRfidPieceRepository : IRepository<RfidPiece>
 
     Task<RfidPiece?> GetWithTraceabilityAsync(string epc, CancellationToken cancellationToken = default);
 
-    Task<IReadOnlyList<RfidPiece>> ListByLotAsync(string lotId, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<RfidPiece>> ListByLotAsync(Guid lotId, CancellationToken cancellationToken = default);
 
-    Task<int> CountByLotAsync(string lotId, CancellationToken cancellationToken = default);
+    Task<int> CountByLotAsync(Guid lotId, CancellationToken cancellationToken = default);
 }
