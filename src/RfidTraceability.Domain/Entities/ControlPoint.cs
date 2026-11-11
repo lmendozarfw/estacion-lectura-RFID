@@ -19,5 +19,6 @@ public class ControlPoint
         Code = DomainGuard.NotNullOrWhiteSpace(code, nameof(code));
         Name = DomainGuard.NotNullOrWhiteSpace(name, nameof(name));
         Description = DomainGuard.NormalizeString(description, nameof(description));
+        BusinessUnitId = DomainGuard.GuidNotEmpty(businessUnitId, nameof(businessUnitId));
     }
 }

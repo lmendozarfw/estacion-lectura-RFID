@@ -54,9 +54,9 @@ public static class DomainGuard
 
     public static int GreaterThanZero(int value, string paramName)
     {
-        if (value < 0)
+        if (value <= 0)
         {
-            throw new ArgumentException($"La pripiedad {paramName} debe ser mayor a cero.", paramName);
+            throw new ArgumentException($"La propiedad {paramName} debe ser mayor a cero.", paramName);
         }
         return value;
     }
