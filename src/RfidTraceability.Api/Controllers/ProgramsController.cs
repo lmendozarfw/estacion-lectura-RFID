@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RfidTraceability.Application.Programs;
+using RfidTraceability.Application.Programs.Dtos;
 
 namespace RfidTraceability.Api.Controllers;
 
@@ -16,5 +17,12 @@ public sealed class ProgramsController(ISender sender) : ControllerBase
     {
         var id = await sender.Send(command, cancellationToken);
         return Created($"/api/programs/{id}", new { id });
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<List<ProgramDto>>> GetAll(CancellationToken cancellationToken)
+    {
+        var programs = await sender.Send(new GetProgramsQuery(), cancellationToken);
+        return Ok(programs);
     }
 }

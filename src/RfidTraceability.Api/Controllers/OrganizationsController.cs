@@ -14,4 +14,11 @@ public sealed class OrganizationsController(ISender sender) : ControllerBase
         var id = await sender.Send(command, cancellationToken);
         return Created($"/api/organizations/{id}", new { id });
     }
+
+    [HttpGet]
+    public async Task<ActionResult<List<OrganizationDto>>> GetAll(CancellationToken cancellationToken)
+    {
+        var organizations = await sender.Send(new GetOrganizationsQuery(), cancellationToken);
+        return Ok(organizations);
+    }
 }

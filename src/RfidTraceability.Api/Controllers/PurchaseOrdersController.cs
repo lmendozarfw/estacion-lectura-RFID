@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RfidTraceability.Application.PurchaseOrders;
+using RfidTraceability.Application.PurchaseOrders.Dtos;
 
 namespace RfidTraceability.Api.Controllers;
 
@@ -16,5 +17,12 @@ public sealed class PurchaseOrdersController(ISender sender) : ControllerBase
     {
         var id = await sender.Send(command, cancellationToken);
         return Created($"/api/purchase-orders/{id}", new { id });
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<List<PurchaseOrderDto>>> GetAll(CancellationToken cancellationToken)
+    {
+        var purchaseOrders = await sender.Send(new GetPurchaseOrdersQuery(), cancellationToken);
+        return Ok(purchaseOrders);
     }
 }
