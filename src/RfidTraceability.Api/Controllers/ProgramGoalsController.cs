@@ -13,7 +13,7 @@ public sealed class ProgramGoalsController(ISender sender) : ControllerBase
     public async Task<ActionResult<Guid>> Create([FromBody] CreateProgramGoalCommand command, CancellationToken cancellationToken)
     {
         var id = await sender.Send(command, cancellationToken);
-        return Created($"/api/programGoals/{id}", new {id});
+        return Created($"/ProgramGoals/{id}", new {id});
     }
 
     [HttpGet]
