@@ -24,9 +24,9 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.Block", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<string>("Code")
@@ -35,10 +35,9 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("codigo");
 
-                    b.Property<string>("ProgramId")
-                        .IsRequired()
+                    b.Property<Guid>("ProgramId")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id_programa");
 
                     b.HasKey("Id");
@@ -51,9 +50,9 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.BusinessUnit", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<bool>("Active")
@@ -74,10 +73,9 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(200)")
                         .HasColumnName("nombre");
 
-                    b.Property<string>("OrganizationId")
-                        .IsRequired()
+                    b.Property<Guid>("OrganizationId")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id_organizacion");
 
                     b.HasKey("Id");
@@ -90,9 +88,9 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.ControlPoint", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<bool>("Active")
@@ -101,10 +99,9 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .HasDefaultValue(true)
                         .HasColumnName("activo");
 
-                    b.Property<string>("BusinessUnitId")
-                        .IsRequired()
+                    b.Property<Guid>("BusinessUnitId")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id_unidad_negocio");
 
                     b.Property<string>("Code")
@@ -134,15 +131,14 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.Lot", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<string>("BlockId")
-                        .IsRequired()
+                    b.Property<Guid>("BlockId")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id_bloque");
 
                     b.Property<string>("Code")
@@ -165,9 +161,9 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.Organization", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<bool>("Active")
@@ -198,37 +194,33 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.PieceControlPointAdvanceReading", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<string>("ControlPointId")
-                        .IsRequired()
+                    b.Property<Guid>("ControlPointId")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id_punto_control");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("fecha");
 
-                    b.Property<string>("RfidPieceId")
-                        .IsRequired()
+                    b.Property<Guid>("RfidPieceId")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id_pieza_rfid");
 
-                    b.Property<string>("RfidReaderId")
-                        .IsRequired()
+                    b.Property<Guid>("RfidReaderId")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id_lector_rfid");
 
-                    b.Property<string>("SourceEventId")
-                        .IsRequired()
+                    b.Property<Guid>("SourceEventId")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id_evento_origen");
 
                     b.HasKey("Id");
@@ -247,9 +239,9 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.Program", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<DateOnly?>("ActualEndDate")
@@ -274,10 +266,9 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .HasColumnType("date")
                         .HasColumnName("fecha_inicio_planificada");
 
-                    b.Property<string>("PurchaseOrderId")
-                        .IsRequired()
+                    b.Property<Guid>("PurchaseOrderId")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id_orden_compra");
 
                     b.Property<string>("Status")
@@ -302,25 +293,23 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.ProgramGoal", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<string>("ControlPointId")
-                        .IsRequired()
+                    b.Property<Guid>("ControlPointId")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id_punto_control");
 
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date")
                         .HasColumnName("fecha");
 
-                    b.Property<string>("ProgramId")
-                        .IsRequired()
+                    b.Property<Guid>("ProgramId")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id_programa");
 
                     b.Property<int>("TargetQuantity")
@@ -339,9 +328,9 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.PurchaseOrder", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<string>("Code")
@@ -359,10 +348,9 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("id_externo");
 
-                    b.Property<string>("OrganizationId")
-                        .IsRequired()
+                    b.Property<Guid>("OrganizationId")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id_organizacion");
 
                     b.Property<string>("Origin")
@@ -386,9 +374,9 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.RfidPiece", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<string>("Epc")
@@ -397,10 +385,9 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(64)")
                         .HasColumnName("epc");
 
-                    b.Property<string>("LotId")
-                        .IsRequired()
+                    b.Property<Guid>("LotId")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id_lote");
 
                     b.Property<string>("SideCode")
@@ -409,10 +396,9 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(2)")
                         .HasColumnName("codigo_lado");
 
-                    b.Property<string>("SkuId")
-                        .IsRequired()
+                    b.Property<Guid>("SkuId")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id_sku");
 
                     b.HasKey("Id");
@@ -430,9 +416,9 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.RfidReader", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<string>("Code")
@@ -441,10 +427,9 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("codigo");
 
-                    b.Property<string>("ControlPointId")
-                        .IsRequired()
+                    b.Property<Guid>("ControlPointId")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id_punto_control");
 
                     b.Property<string>("SerialNumber")
@@ -474,9 +459,9 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.Sku", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.Property<bool>("Active")
@@ -496,10 +481,9 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(500)")
                         .HasColumnName("descripcion");
 
-                    b.Property<string>("OrganizationId")
-                        .IsRequired()
+                    b.Property<Guid>("OrganizationId")
                         .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("uuid")
                         .HasColumnName("id_organizacion");
 
                     b.HasKey("Id");

@@ -5,7 +5,7 @@ using RfidTraceability.Application.Blocks;
 namespace RfidTraceability.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 public sealed class BlocksController(ISender sender) : ControllerBase
 {
     [HttpPost]

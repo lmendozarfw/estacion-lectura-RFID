@@ -5,7 +5,7 @@ using RfidTraceability.Application.ControlPoints;
 namespace RfidTraceability.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 public sealed class ControlPointsController(ISender sender) : ControllerBase
 {
     [HttpPost]

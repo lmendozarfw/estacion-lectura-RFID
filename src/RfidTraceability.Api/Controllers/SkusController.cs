@@ -5,7 +5,7 @@ using RfidTraceability.Application.Skus;
 namespace RfidTraceability.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 public sealed class SkusController(ISender sender) : ControllerBase
 {
     [HttpPost]

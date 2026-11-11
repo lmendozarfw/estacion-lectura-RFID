@@ -37,7 +37,7 @@ public static class DependencyInjection
         services.AddScoped<IRfidReaderRepository, RfidReaderRepository>();
         services.AddScoped<ISkuRepository, SkuRepository>();
 
-        services.AddHostedService<RfidReaderSignalRListener>();
+        // services.AddHostedService<RfidReaderSignalRListener>();
 
         return services;
     }

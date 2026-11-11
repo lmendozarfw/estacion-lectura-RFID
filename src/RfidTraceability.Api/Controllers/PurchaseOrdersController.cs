@@ -5,7 +5,7 @@ using RfidTraceability.Application.PurchaseOrders;
 namespace RfidTraceability.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 public sealed class PurchaseOrdersController(ISender sender) : ControllerBase
 {
     [HttpPost]

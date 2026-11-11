@@ -5,7 +5,7 @@ using RfidTraceability.Application.Lots;
 namespace RfidTraceability.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 public sealed class LotsController(ISender sender) : ControllerBase
 {
     [HttpPost]
