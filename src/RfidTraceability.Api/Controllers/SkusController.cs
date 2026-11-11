@@ -15,6 +15,6 @@ public sealed class SkusController(ISender sender) : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateSkuCommand command, CancellationToken cancellationToken)
     {
         var id = await sender.Send(command, cancellationToken);
-        return Created($"/api/skus/{id}", new { id });
+        return Created($"/Skus/{id}", new { id });
     }
 }

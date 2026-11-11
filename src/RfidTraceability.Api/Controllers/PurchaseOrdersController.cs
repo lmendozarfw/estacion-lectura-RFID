@@ -16,7 +16,7 @@ public sealed class PurchaseOrdersController(ISender sender) : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreatePurchaseOrderCommand command, CancellationToken cancellationToken)
     {
         var id = await sender.Send(command, cancellationToken);
-        return Created($"/api/purchase-orders/{id}", new { id });
+        return Created($"/PurchaseOrders/{id}", new { id });
     }
 
     [HttpGet]

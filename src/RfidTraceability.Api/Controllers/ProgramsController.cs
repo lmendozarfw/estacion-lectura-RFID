@@ -16,7 +16,7 @@ public sealed class ProgramsController(ISender sender) : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateProgramCommand command, CancellationToken cancellationToken)
     {
         var id = await sender.Send(command, cancellationToken);
-        return Created($"/api/programs/{id}", new { id });
+        return Created($"/Programs/{id}", new { id });
     }
 
     [HttpGet]

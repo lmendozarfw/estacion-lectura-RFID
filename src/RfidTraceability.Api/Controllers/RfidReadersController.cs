@@ -16,7 +16,7 @@ public sealed class RfidReadersController(ISender sender) : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateRfidReaderCommand command, CancellationToken cancellationToken)
     {
         var id = await sender.Send(command, cancellationToken);
-        return Created($"/api/rfid-readers/{id}", new { id });
+        return Created($"/RfidReaders/{id}", new { id });
     }
 
     [HttpGet]

@@ -16,7 +16,7 @@ public sealed class ControlPointsController(ISender sender) : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateControlPointCommand command, CancellationToken cancellationToken)
     {
         var id = await sender.Send(command, cancellationToken);
-        return Created($"/api/control-points/{id}", new { id });
+        return Created($"/ControlPoints/{id}", new { id });
     }
 
     [HttpGet]

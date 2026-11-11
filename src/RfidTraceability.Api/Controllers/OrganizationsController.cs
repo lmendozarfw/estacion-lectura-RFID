@@ -12,7 +12,7 @@ public sealed class OrganizationsController(ISender sender) : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateOrganizationCommand command, CancellationToken cancellationToken)
     {
         var id = await sender.Send(command, cancellationToken);
-        return Created($"/api/organizations/{id}", new { id });
+        return Created($"/Organizations/{id}", new { id });
     }
 
     [HttpGet]

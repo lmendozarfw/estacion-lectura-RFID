@@ -15,6 +15,6 @@ public sealed class LotsController(ISender sender) : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateLotCommand command, CancellationToken cancellationToken)
     {
         var id = await sender.Send(command, cancellationToken);
-        return Created($"/api/lots/{id}", new { id });
+        return Created($"/Lots/{id}", new { id });
     }
 }

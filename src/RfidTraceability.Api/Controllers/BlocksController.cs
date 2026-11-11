@@ -15,6 +15,6 @@ public sealed class BlocksController(ISender sender) : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateBlockCommand command, CancellationToken cancellationToken)
     {
         var id = await sender.Send(command, cancellationToken);
-        return Created($"/api/blocks/{id}", new { id });
+        return Created($"/Blocks/{id}", new { id });
     }
 }

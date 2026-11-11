@@ -13,7 +13,7 @@ public sealed class BusinessUnitsController(ISender sender) : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateBusinessUnitCommand command, CancellationToken cancellationToken)
     {
         var id = await sender.Send(command, cancellationToken);
-        return Created($"/api/business-units/{id}", new { id });
+        return Created($"/Business-units/{id}", new { id });
     }
 
     [HttpGet]
