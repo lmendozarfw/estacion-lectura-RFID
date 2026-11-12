@@ -7,7 +7,6 @@ public class BusinessUnit
     public string Name { get; set; } = string.Empty;
     public bool Active { get; set; } = true;
     public Guid OrganizationId { get; set; }
-
     public Organization Organization { get; set; } = null!;
     public ICollection<ControlPoint> ControlPoints { get; set; } = new List<ControlPoint>();
 

@@ -1,4 +1,4 @@
-using RfidTraceability.Api;
+using RfidTraceability.Api.Middlewares;
 using RfidTraceability.Application;
 using RfidTraceability.Infrastructure;
 using Scalar.AspNetCore;
@@ -9,8 +9,6 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-builder.Services.AddProblemDetails();
 
 builder.Services.AddCors(options =>
 {
@@ -34,10 +32,9 @@ if (app.Environment.IsDevelopment())
         options.WithTitle("Módulo Calidad API");
     });
 }
-
-app.UseExceptionHandler();
-app.MapControllers();
+app.UseMiddleware<GlobalExceptionMiddleware>();
 app.UseCors("all");
+app.MapControllers();
 app.MapHub<ProductionHub>("/hubs/production");
 
 app.Run();
