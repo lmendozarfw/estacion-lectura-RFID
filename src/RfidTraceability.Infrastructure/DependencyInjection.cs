@@ -3,9 +3,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RfidTraceability.Application.Common;
 using RfidTraceability.Application.Readings;
+using RfidTraceability.Application.Security;
 using RfidTraceability.Domain.Repositories;
 using RfidTraceability.Infrastructure.Persistence;
 using RfidTraceability.Infrastructure.Repositories;
+using RfidTraceability.Infrastructure.Security;
 using RfidTraceability.Infrastructure.SignalR;
 
 namespace RfidTraceability.Infrastructure;
@@ -20,9 +22,14 @@ public static class DependencyInjection
 
         services.Configure<RfidReaderHubOptions>(
             configuration.GetSection(RfidReaderHubOptions.SectionName));
+        services.Configure<JwtOptions>(
+            configuration.GetSection(JwtOptions.SectionName));
 
         services.AddScoped<IEpcReadingProcessor, LoggingEpcReadingProcessor>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IPasswordHasher, Pbkdf2PasswordHasher>();
+        services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddScoped<IRefreshTokenGenerator, RefreshTokenGenerator>();
 
         services.AddScoped<IBlockRepository, BlockRepository>();
         services.AddScoped<IBusinessUnitRepository, BusinessUnitRepository>();
@@ -36,6 +43,8 @@ public static class DependencyInjection
         services.AddScoped<IRfidPieceRepository, RfidPieceRepository>();
         services.AddScoped<IRfidReaderRepository, RfidReaderRepository>();
         services.AddScoped<ISkuRepository, SkuRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
         // services.AddHostedService<RfidReaderSignalRListener>();
 

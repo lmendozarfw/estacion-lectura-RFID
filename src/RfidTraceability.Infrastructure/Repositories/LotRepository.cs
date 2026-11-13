@@ -19,6 +19,12 @@ public class LotRepository(AppDbContext context) : ILotRepository
         return lot != null;
     }
 
+    public async Task<bool> ExistsByCodeAsync(Guid blockId, string code, CancellationToken cancellationToken = default)
+    {
+        return await context.Lots.AsQueryable().AsNoTracking()
+            .AnyAsync(l => l.BlockId == blockId && l.Code == code, cancellationToken);
+    }
+
     public async Task<IReadOnlyList<Lot>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         return await context.Lots.AsQueryable().AsNoTracking().ToListAsync(cancellationToken);

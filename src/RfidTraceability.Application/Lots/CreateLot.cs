@@ -26,7 +26,7 @@ public sealed class CreateLotHandler(
             throw new DuplicateException($"Ya existe un lote con el código '{request.Code}' para el bloque.");
         }
 
-        var lot = new Lot(request.Code, request.ExpectedPairs, request.BlockId);
+        var lot = new Lot(request.Code, request.BlockId, request.ExpectedPairs);
         await lots.AddAsync(lot, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

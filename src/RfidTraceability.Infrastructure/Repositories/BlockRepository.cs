@@ -19,6 +19,12 @@ public class BlockRepository(AppDbContext context) : IBlockRepository
         return block != null;
     }
 
+    public async Task<bool> ExistsByCodeAsync(Guid programId, string code, CancellationToken cancellationToken = default)
+    {
+        return await context.Blocks.AsQueryable().AsNoTracking()
+            .AnyAsync(b => b.ProgramId == programId && b.Code == code, cancellationToken);
+    }
+
     public async Task<IReadOnlyList<Block>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         return await context.Blocks.AsQueryable().AsNoTracking().ToListAsync(cancellationToken);

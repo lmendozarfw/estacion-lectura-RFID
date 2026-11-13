@@ -19,6 +19,12 @@ public class ProgramRepository(AppDbContext context) : IProgramRepository
         return program != null;
     }
 
+    public async Task<bool> ExistsByCodeAsync(Guid organizationId, string code, CancellationToken cancellationToken = default)
+    {
+        return await context.Programs.AsQueryable().AsNoTracking()
+            .AnyAsync(p => p.PurchaseOrder.OrganizationId == organizationId && p.Code == code, cancellationToken);
+    }
+
     public async Task<IReadOnlyList<Program>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         return await context.Programs.AsQueryable().AsNoTracking().ToListAsync(cancellationToken);

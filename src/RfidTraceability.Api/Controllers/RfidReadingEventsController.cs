@@ -1,9 +1,17 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RfidTraceability.Api.Extensions;
+using RfidTraceability.Application.Readings;
 
 [ApiController]
 [Route("[controller]")]
-public class RfidReadingEventsController(ISender sender, ILogger<RfidReadingEventsController> logger) : ControllerBase
+[Authorize]
+public class RfidReadingEventsController(
+    ISender sender, 
+    ILogger<RfidReadingEventsController> logger,
+    ProductionAdvanceService productionAdvanceService
+    ) : ControllerBase
 {
     [HttpPost]
     public async Task<ActionResult<bool>> Register([FromBody] List<RfidWorkerEvent> events, CancellationToken cancellationToken)
@@ -14,14 +22,18 @@ public class RfidReadingEventsController(ISender sender, ILogger<RfidReadingEven
             logger.LogInformation($"EventId: {eventW.EventId}, Epc: {eventW.Epc}, ReaderDate: {eventW.ReaderDate}");
         }
 
-        // iterar los eventos
-        // revisar si existe un "pieza_rfid" con el epc que viene del evento
-        // si ya existe, no se crea
-        // si no existe, se crea agregando la información del lote, bloque, programa, sku, lado
-        // se obtiene informacion de qué lector mando el evento
-        // se obtiene el punto de control de donde está el lector
-        // se registra un "avances_pieza_punto_control" con la información obtenida antes
-        // se calculan avances por programa y punto de control para mandarlo mediante SignalR al cliente
+        var command = new RegisterRfidReadingEventsCommand(
+            events.Select(eventW => new RfidReadingEventInput(
+                eventW.EventId,
+                eventW.Epc,
+                eventW.ReaderDate,
+                eventW.LectorRfidId)).ToList(),
+            User.GetOrganizationId());
+
+        var processed = await sender.Send(command, cancellationToken);
+        logger.LogInformation("Eventos procesados: {Processed}", processed);
+
+        await productionAdvanceService.AdvanceNotification(new RfidWorkerEvent(Guid.NewGuid(), "EPC-01", DateTime.UtcNow, Guid.NewGuid()));
         return Ok(true);
     }
 }

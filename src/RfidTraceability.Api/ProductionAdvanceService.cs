@@ -9,7 +9,7 @@ public class ProductionAdvanceService
         _hubContext = hubContext;
     }
 
-    public async Task AdvanceNotification(object advance)
+    public async Task AdvanceNotification(RfidWorkerEvent advance)
     {
         await _hubContext.Clients.All.SendAsync("advanceUpdate", advance);
     }

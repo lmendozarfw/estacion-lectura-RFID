@@ -159,6 +159,44 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                     b.ToTable("lotes", (string)null);
                 });
 
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.Module", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasMaxLength(36)
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Active")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true)
+                        .HasColumnName("activo");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("codigo");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("descripcion");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("nombre");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("modulos", (string)null);
+                });
+
             modelBuilder.Entity("RfidTraceability.Domain.Entities.Organization", b =>
                 {
                     b.Property<Guid>("Id")
@@ -190,6 +228,49 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("organizaciones", (string)null);
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.Permission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasMaxLength(36)
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Active")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true)
+                        .HasColumnName("activo");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("codigo");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("descripcion");
+
+                    b.Property<Guid>("ModuleId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uuid")
+                        .HasColumnName("id_modulo");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("nombre");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ModuleId", "Code")
+                        .IsUnique();
+
+                    b.ToTable("permisos", (string)null);
                 });
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.PieceControlPointAdvanceReading", b =>
@@ -372,6 +453,51 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                     b.ToTable("ordenes_compra", (string)null);
                 });
 
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasMaxLength(36)
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fecha_creacion");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fecha_expiracion");
+
+                    b.Property<string>("ReplacedByTokenHash")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnName("reemplazado_por");
+
+                    b.Property<DateTime?>("RevokedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fecha_revocacion");
+
+                    b.Property<string>("TokenHash")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnName("token_hash");
+
+                    b.Property<Guid>("UserId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uuid")
+                        .HasColumnName("id_usuario");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TokenHash")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("tokens_refresco", (string)null);
+                });
+
             modelBuilder.Entity("RfidTraceability.Domain.Entities.RfidPiece", b =>
                 {
                     b.Property<Guid>("Id")
@@ -457,6 +583,63 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                     b.ToTable("lectores_rfid", (string)null);
                 });
 
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasMaxLength(36)
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Active")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true)
+                        .HasColumnName("activo");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("codigo");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("descripcion");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("nombre");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("roles", (string)null);
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.RolePermission", b =>
+                {
+                    b.Property<Guid>("RoleId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uuid")
+                        .HasColumnName("id_rol");
+
+                    b.Property<Guid>("PermissionId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uuid")
+                        .HasColumnName("id_permiso");
+
+                    b.HasKey("RoleId", "PermissionId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.ToTable("roles_permisos", (string)null);
+                });
+
             modelBuilder.Entity("RfidTraceability.Domain.Entities.Sku", b =>
                 {
                     b.Property<Guid>("Id")
@@ -492,6 +675,77 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("skus", (string)null);
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasMaxLength(36)
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Active")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true)
+                        .HasColumnName("activo");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fecha_creacion");
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("employee_id");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uuid")
+                        .HasColumnName("id_organizacion");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("password_hash");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fecha_actualizacion");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("username");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId", "Username")
+                        .IsUnique();
+
+                    b.ToTable("usuarios", (string)null);
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.UserRole", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uuid")
+                        .HasColumnName("id_usuario");
+
+                    b.Property<Guid>("RoleId")
+                        .HasMaxLength(36)
+                        .HasColumnType("uuid")
+                        .HasColumnName("id_rol");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("usuarios_roles", (string)null);
                 });
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.Block", b =>
@@ -536,6 +790,17 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Block");
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.Permission", b =>
+                {
+                    b.HasOne("RfidTraceability.Domain.Entities.Module", "Module")
+                        .WithMany("Permissions")
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Module");
                 });
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.PieceControlPointAdvanceReading", b =>
@@ -606,6 +871,17 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                     b.Navigation("Organization");
                 });
 
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("RfidTraceability.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("RfidTraceability.Domain.Entities.RfidPiece", b =>
                 {
                     b.HasOne("RfidTraceability.Domain.Entities.Lot", "Lot")
@@ -636,6 +912,25 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                     b.Navigation("ControlPoint");
                 });
 
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.RolePermission", b =>
+                {
+                    b.HasOne("RfidTraceability.Domain.Entities.Permission", "Permission")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RfidTraceability.Domain.Entities.Role", "Role")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("RfidTraceability.Domain.Entities.Sku", b =>
                 {
                     b.HasOne("RfidTraceability.Domain.Entities.Organization", "Organization")
@@ -645,6 +940,36 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.User", b =>
+                {
+                    b.HasOne("RfidTraceability.Domain.Entities.Organization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.UserRole", b =>
+                {
+                    b.HasOne("RfidTraceability.Domain.Entities.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RfidTraceability.Domain.Entities.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.Block", b =>
@@ -671,6 +996,11 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                     b.Navigation("RfidPieces");
                 });
 
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.Module", b =>
+                {
+                    b.Navigation("Permissions");
+                });
+
             modelBuilder.Entity("RfidTraceability.Domain.Entities.Organization", b =>
                 {
                     b.Navigation("BusinessUnits");
@@ -678,6 +1008,11 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                     b.Navigation("PurchaseOrders");
 
                     b.Navigation("Skus");
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.Permission", b =>
+                {
+                    b.Navigation("RolePermissions");
                 });
 
             modelBuilder.Entity("RfidTraceability.Domain.Entities.Program", b =>
@@ -702,9 +1037,21 @@ namespace RfidTraceability.Infrastructure.Persistence.Migrations
                     b.Navigation("AdvanceReadings");
                 });
 
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.Role", b =>
+                {
+                    b.Navigation("RolePermissions");
+
+                    b.Navigation("UserRoles");
+                });
+
             modelBuilder.Entity("RfidTraceability.Domain.Entities.Sku", b =>
                 {
                     b.Navigation("RfidPieces");
+                });
+
+            modelBuilder.Entity("RfidTraceability.Domain.Entities.User", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }
