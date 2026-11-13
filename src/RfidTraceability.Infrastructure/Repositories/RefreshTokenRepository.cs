@@ -32,6 +32,8 @@ public class RefreshTokenRepository(AppDbContext context) : IRefreshTokenReposit
     {
         return await context.RefreshTokens.AsQueryable()
             .Include(t => t.User)
+                .ThenInclude(u => u.Employee)
+            .Include(t => t.User)
                 .ThenInclude(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role)
             .FirstOrDefaultAsync(t => t.TokenHash == tokenHash, cancellationToken);

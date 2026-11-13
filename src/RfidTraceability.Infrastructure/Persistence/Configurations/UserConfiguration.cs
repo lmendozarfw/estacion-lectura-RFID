@@ -33,9 +33,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder.Property(x => x.EmployeeId)
-            .HasColumnName("employee_id")
-            .HasMaxLength(50)
-            .IsRequired();
+            .HasColumnName("id_empleado")
+            .HasMaxLength(36);
 
         builder.Property(x => x.Active)
             .HasColumnName("activo")
@@ -57,7 +56,15 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasForeignKey(x => x.OrganizationId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasIndex(x => new { x.OrganizationId, x.Username })
+        builder.HasOne(x => x.Employee)
+            .WithOne(x => x.User)
+            .HasForeignKey<User>(x => x.EmployeeId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasIndex(x => x.EmployeeId)
+            .IsUnique();
+
+        builder.HasIndex(x => x.Username)
             .IsUnique();
     }
 }

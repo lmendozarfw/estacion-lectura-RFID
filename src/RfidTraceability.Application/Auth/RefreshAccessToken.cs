@@ -39,7 +39,7 @@ public sealed class RefreshAccessTokenHandler(
             user.Id,
             user.OrganizationId,
             user.Username,
-            user.EmployeeId,
+            user.Employee?.EmployeeNumber ?? string.Empty,
             roles);
 
         var newRawToken = refreshTokenGenerator.Generate();

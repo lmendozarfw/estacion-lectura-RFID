@@ -8,7 +8,7 @@ using RfidTraceability.Domain.Repositories;
 
 namespace RfidTraceability.Application.Auth;
 
-public sealed record LoginCommand(Guid OrganizationId, string Username, string Password) : IRequest<LoginResult>;
+public sealed record LoginCommand(string Username, string Password) : IRequest<LoginResult>;
 
 public sealed record LoginResult(
     string AccessToken,
@@ -28,7 +28,7 @@ public sealed class LoginHandler(
 {
     public async Task<LoginResult> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await users.GetByUsernameAsync(request.OrganizationId, request.Username, cancellationToken);
+        var user = await users.GetByUsernameAsync(request.Username.Trim(), cancellationToken);
 
         if (user is null || !user.Active || !passwordHasher.Verify(request.Password, user.PasswordHash))
         {
@@ -40,7 +40,7 @@ public sealed class LoginHandler(
             user.Id,
             user.OrganizationId,
             user.Username,
-            user.EmployeeId,
+            user.Employee?.EmployeeNumber ?? string.Empty,
             roles);
 
         var refreshToken = await CreateRefreshTokenAsync(user.Id, cancellationToken);

@@ -6,13 +6,14 @@ namespace RfidTraceability.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public sealed class AuthController(ISender sender) : ControllerBase
+public sealed class AuthController(ISender sender, ILogger<AuthController> logger) : ControllerBase
 {
     [HttpPost("login")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<LoginResult>> Login([FromBody] LoginCommand command, CancellationToken cancellationToken)
     {
+        logger.LogInformation("Intento de login para {Username}.", command.Username);
         var result = await sender.Send(command, cancellationToken);
         return Ok(result);
     }

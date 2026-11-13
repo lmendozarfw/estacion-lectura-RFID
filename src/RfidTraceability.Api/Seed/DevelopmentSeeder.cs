@@ -29,16 +29,26 @@ public static class DevelopmentSeeder
             await context.SaveChangesAsync();
         }
 
-        var userExists = await context.Users
-            .AnyAsync(u => u.OrganizationId == organization.Id && u.Username == DefaultUsername);
+        var employee = await context.Employees
+            .FirstOrDefaultAsync(e => e.EmployeeNumber == "EMP-001");
 
-        if (!userExists)
+        if (employee is null)
         {
-            var user = new User(
+            employee = new Employee("EMP-001", "Admin", "Demo", "Demo");
+            context.Employees.Add(employee);
+            await context.SaveChangesAsync();
+        }
+
+        var user = await context.Users
+            .FirstOrDefaultAsync(u => u.Username == DefaultUsername);
+
+        if (user is null)
+        {
+            user = new User(
                 organization.Id,
                 DefaultUsername,
                 passwordHasher.Hash(DefaultPassword),
-                "EMP-001");
+                employee.Id);
 
             context.Users.Add(user);
             await context.SaveChangesAsync();
@@ -48,6 +58,11 @@ public static class DevelopmentSeeder
                 organization.Id,
                 DefaultUsername,
                 DefaultPassword);
+        }
+        else if (user.EmployeeId is null)
+        {
+            user.EmployeeId = employee.Id;
+            await context.SaveChangesAsync();
         }
     }
 }

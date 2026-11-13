@@ -34,18 +34,20 @@ public class UserRepository(AppDbContext context) : IUserRepository
         return await context.Users.AsQueryable().AsNoTracking().FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
     }
 
-    public async Task<User?> GetByUsernameAsync(Guid organizationId, string username, CancellationToken cancellationToken = default)
+    public async Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken = default)
     {
         return await context.Users.AsQueryable().AsNoTracking()
+            .Include(u => u.Employee)
             .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role)
-            .FirstOrDefaultAsync(u => u.OrganizationId == organizationId && u.Username == username, cancellationToken);
+            .FirstOrDefaultAsync(u => u.Username == username, cancellationToken);
     }
 
     public async Task<User?> GetWithOrganizationAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await context.Users.AsQueryable().AsNoTracking()
             .Include(u => u.Organization)
+            .Include(u => u.Employee)
             .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role)
             .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
