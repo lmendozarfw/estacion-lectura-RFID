@@ -1,5 +1,5 @@
 using System.Globalization;
-
+namespace RfidTraceability.Application.Readings;
 public record Metric(
     string Title,
     string Value,

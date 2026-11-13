@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using RfidTraceability.Application.Common.Exceptions;
 
@@ -12,7 +13,7 @@ public static class ClaimsPrincipalExtensions
 
     public static Guid GetUserId(this ClaimsPrincipal principal)
     {
-        return principal.GetGuidClaim(ClaimTypes.NameIdentifier, "El token no contiene un usuario válido.");
+        return principal.GetGuidClaim(JwtRegisteredClaimNames.Sub, "El token no contiene un usuario válido.");
     }
 
     private static Guid GetGuidClaim(this ClaimsPrincipal principal, string claimType, string errorMessage)
