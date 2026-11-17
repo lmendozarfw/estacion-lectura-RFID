@@ -19,6 +19,13 @@ public class PieceControlPointAdvanceReading
         RfidPieceId = DomainGuard.GuidNotEmpty(rfidPieceId, nameof(rfidPieceId));
         ControlPointId = DomainGuard.GuidNotEmpty(controlPointId, nameof(controlPointId));
         RfidReaderId = DomainGuard.GuidNotEmpty(rfidReaderId, nameof(rfidReaderId));
-        Date = DomainGuard.DateTimeNotDefault(date, nameof(date));
+
+        var validDate = DomainGuard.DateTimeNotDefault(date, nameof(date));
+        Date = validDate.Kind switch
+        {
+            DateTimeKind.Local => validDate.ToUniversalTime(),
+            DateTimeKind.Unspecified => DateTime.SpecifyKind(validDate, DateTimeKind.Utc),
+            _ => validDate
+        };
     }
 }

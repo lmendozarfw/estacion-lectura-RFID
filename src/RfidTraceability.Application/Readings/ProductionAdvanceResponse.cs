@@ -14,8 +14,6 @@ public record ProgramProgress(
     int CompletedPairs,
     int TargetPairs,
     int ClosedLots,
-    int IncompleteLots,
-    int UnmatchedPairs,
     string Status, // 'normal' | 'incomplete'
     DateTime UpdatedAt
 );
@@ -25,4 +23,10 @@ public record AttentionAlert(
     string Title,
     string Description,
     string Severity // 'danger' | 'warning'
+);
+
+public record ProductionAdvanceResponse(
+    List<Metric> Metrics,
+    List<ProgramProgress> ProgramProgress,
+    List<AttentionAlert> AttentionAlert
 );
