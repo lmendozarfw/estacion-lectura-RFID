@@ -65,7 +65,7 @@ if (app.Environment.IsDevelopment())
     });
     await app.Services.SeedDevelopmentDataAsync();
 }
-
+app.UseMiddleware<OtherMioddleware>();
 app.UseMiddleware<GlobalExceptionMiddleware>();
 app.UseCors("all");
 app.UseAuthentication();

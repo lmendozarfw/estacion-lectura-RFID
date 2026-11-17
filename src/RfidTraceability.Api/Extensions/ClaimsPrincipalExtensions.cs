@@ -4,6 +4,11 @@ using RfidTraceability.Application.Common.Exceptions;
 
 namespace RfidTraceability.Api.Extensions;
 
+/*
+Esta clase de extensión proporciona métodos para obtener de forma mas semántica y limpia
+los valores de los claims.
+¡Vivan los métodos de extensión!
+*/
 public static class ClaimsPrincipalExtensions
 {
     public static Guid GetOrganizationId(this ClaimsPrincipal principal)

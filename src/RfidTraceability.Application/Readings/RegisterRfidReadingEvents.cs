@@ -36,8 +36,11 @@ public sealed class RegisterRfidReadingEventsHandler(
                 continue;
             }
 
-            var reader = await readers.GetByIdAsync(readingEvent.ReaderId, cancellationToken)
-                ?? throw new EntityNotFoundException(nameof(RfidReader), readingEvent.ReaderId);
+            var reader = await readers.GetByIdAsync(readingEvent.ReaderId, cancellationToken);
+            if (reader is null)
+            {
+                throw new EntityNotFoundException(nameof(RfidReader), readingEvent.ReaderId);
+            }
 
             var piece = await pieces.GetByEpcAsync(readingEvent.Epc, cancellationToken);
 
@@ -49,10 +52,9 @@ public sealed class RegisterRfidReadingEventsHandler(
                 readingEvent.EventId,
                 pieceId,
                 reader.ControlPointId,
-                reader.Id)
-            {
-                Date = readingEvent.ReaderDate
-            };
+                reader.Id,
+                readingEvent.ReaderDate
+            );
 
             await advanceReadings.AddAsync(advanceReading, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);

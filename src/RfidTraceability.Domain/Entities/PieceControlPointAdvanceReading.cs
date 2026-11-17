@@ -13,11 +13,12 @@ public class PieceControlPointAdvanceReading
     public ControlPoint ControlPoint { get; set; } = null!;
     public RfidReader RfidReader { get; set; } = null!;
 
-    public PieceControlPointAdvanceReading(Guid sourceEventId, Guid rfidPieceId, Guid controlPointId, Guid rfidReaderId)
+    public PieceControlPointAdvanceReading(Guid sourceEventId, Guid rfidPieceId, Guid controlPointId, Guid rfidReaderId, DateTime date)
     {
         SourceEventId = DomainGuard.GuidNotEmpty(sourceEventId, nameof(sourceEventId));
         RfidPieceId = DomainGuard.GuidNotEmpty(rfidPieceId, nameof(rfidPieceId));
         ControlPointId = DomainGuard.GuidNotEmpty(controlPointId, nameof(controlPointId));
         RfidReaderId = DomainGuard.GuidNotEmpty(rfidReaderId, nameof(rfidReaderId));
+        Date = DomainGuard.DateTimeNotDefault(date, nameof(date));
     }
 }

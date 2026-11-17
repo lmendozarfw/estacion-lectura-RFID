@@ -32,7 +32,7 @@ public class RfidReadingEventsController(
 
         var processed = await sender.Send(command, cancellationToken);
         logger.LogInformation("Eventos procesados: {Processed}", processed);
-
+        // Cambiar el tipo de retorno para poner la informacion que requiere el frontend
         await productionAdvanceService.AdvanceNotification(new RfidWorkerEvent(Guid.NewGuid(), "EPC-01", DateTime.UtcNow, Guid.NewGuid()));
         return Ok(true);
     }

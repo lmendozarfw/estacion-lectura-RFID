@@ -70,4 +70,13 @@ public static class DomainGuard
         }
         return valor;
     }    
+
+    public static DateTime DateTimeNotDefault(DateTime value, string paramName)
+    {
+        if (value == default)
+        {
+            throw new ArgumentException($"La propiedad {paramName} es requerida.", paramName);
+        }
+        return value;
+    }
 }
