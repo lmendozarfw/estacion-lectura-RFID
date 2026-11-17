@@ -2,7 +2,11 @@ using System.Text.Json;
 using RfidTraceability.Application.Common.Exceptions;
 
 namespace RfidTraceability.Api.Middlewares;
-
+/*
+Esta clase representa un middleware global para capturar y manejar excepciones.
+La idea de tenerlo es que no se controlen los errores en otros archivos, sino que se
+centralicen en este middleware, para que el código sea más limpio y fácil de mantener.
+*/
 public class GlobalExceptionMiddleware
 (
     RequestDelegate next, 
@@ -14,6 +18,7 @@ public class GlobalExceptionMiddleware
     {
         try
         {
+            Console.WriteLine($"En el exception...");
             await next(context);
         }
         catch (Exception ex)
