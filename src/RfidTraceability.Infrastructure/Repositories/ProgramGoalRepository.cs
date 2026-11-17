@@ -77,6 +77,17 @@ public class ProgramGoalRepository(AppDbContext context) : IProgramGoalRepositor
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<IReadOnlyList<ProgramGoal>> ListByControlPointAndDateAsync(
+        Guid controlPointId,
+        DateOnly date,
+        CancellationToken cancellationToken = default)
+    {
+        return await context.ProgramGoals.AsQueryable().AsNoTracking()
+            .Include(g => g.Program).ThenInclude(p => p.PurchaseOrder)
+            .Where(g => g.ControlPointId == controlPointId && g.Date == date)
+            .ToListAsync(cancellationToken);
+    }
+
     public void Remove(ProgramGoal entity)
     {
         context.ProgramGoals.Remove(entity);

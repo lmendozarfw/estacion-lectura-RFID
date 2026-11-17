@@ -37,4 +37,9 @@ public interface IPieceControlPointAdvanceReadingRepository : IRepository<PieceC
         Guid controlPointId,
         DateOnly date,
         CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<PieceControlPointAdvanceReading>> ListByControlPointAndDateWithPieceAsync(
+        Guid controlPointId,
+        DateOnly date,
+        CancellationToken cancellationToken = default);
 }

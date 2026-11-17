@@ -11,6 +11,15 @@ public record RfidReaderDto(
     Guid ControlPointId
 );
 
+public record RfidReaderConfigDto(
+    Guid Id,
+    string Code,
+    string SerialNumber,
+    Guid ControlPointId,
+    string ControlPointCode,
+    string ControlPointName
+);
+
 public static class RfidReaderMappingExtensions
 {
     public static RfidReaderDto ToMap(this RfidReader entity) => new RfidReaderDto(

@@ -99,6 +99,19 @@ public class PieceControlPointAdvanceReadingRepository(AppDbContext context) : I
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<IReadOnlyList<PieceControlPointAdvanceReading>> ListByControlPointAndDateWithPieceAsync(
+        Guid controlPointId,
+        DateOnly date,
+        CancellationToken cancellationToken = default)
+    {
+        var (start, end) = ToUtcDayRange(date);
+
+        return await context.PieceControlPointAdvanceReadings.AsQueryable().AsNoTracking()
+            .Include(r => r.RfidPiece).ThenInclude(p => p.Lot).ThenInclude(l => l.Block)
+            .Where(r => r.ControlPointId == controlPointId && r.Date >= start && r.Date < end)
+            .ToListAsync(cancellationToken);
+    }
+
     public void Remove(PieceControlPointAdvanceReading entity)
     {
         context.PieceControlPointAdvanceReadings.Remove(entity);

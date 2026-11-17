@@ -1,5 +1,7 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RfidTraceability.Api.Extensions;
 using RfidTraceability.Application.RfidReaders;
 using RfidTraceability.Application.RfidReaders.Dtos;
 
@@ -24,5 +26,17 @@ public sealed class RfidReadersController(ISender sender) : ControllerBase
     {
         var rfidReaders = await sender.Send(new GetRfidReadersQuery(), cancellationToken);
         return Ok(rfidReaders);
+    }
+
+    [HttpGet("{id:guid}")]
+    [Authorize]
+    public async Task<ActionResult<RfidReaderConfigDto>> GetById(Guid id, CancellationToken cancellationToken)
+    {
+        var reader = await sender.Send(
+            new GetRfidReaderByIdQuery(id, User.GetOrganizationId()),
+            cancellationToken
+        );
+
+        return Ok(reader);
     }
 }

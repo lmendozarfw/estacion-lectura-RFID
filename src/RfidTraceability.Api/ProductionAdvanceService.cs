@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.SignalR;
+using RfidTraceability.Application.Readings;
 
 public class ProductionAdvanceService
 {
@@ -9,7 +10,7 @@ public class ProductionAdvanceService
         _hubContext = hubContext;
     }
 
-    public async Task AdvanceNotification(RfidWorkerEvent advance)
+    public async Task AdvanceNotification(ProductionAdvanceResponse advance)
     {
         await _hubContext.Clients.All.SendAsync("advanceUpdate", advance);
     }

@@ -14,7 +14,7 @@ public class RfidReadingEventsController(
     ) : ControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult<bool>> Register([FromBody] List<RfidWorkerEvent> events, CancellationToken cancellationToken)
+    public async Task<ActionResult<ProductionAdvanceResponse>> Register([FromBody] List<RfidWorkerEvent> events, CancellationToken cancellationToken)
     {
         logger.LogInformation("Eventos recibidos desde el worker:");
         foreach (var eventW in events)
@@ -47,9 +47,16 @@ public class RfidReadingEventsController(
         //   - cuantos pares hay
         //   - cuantos son los pares objetivos
         //   - cuantos lotes ya se cerraron (10 pares por lote)
-        // Cambiar el tipo de retorno para poner la informacion que requiere el frontend
-        await productionAdvanceService.AdvanceNotification(new RfidWorkerEvent(Guid.NewGuid(), "EPC-01", DateTime.UtcNow, Guid.NewGuid()));
-        return Ok(true);
+
+        if (events.Count == 0)
+        {
+            return Ok(new ProductionAdvanceResponse([], [], []));
+        }
+
+        var date = DateOnly.FromDateTime(ToUtc(events[0].ReaderDate));
+        var response = await sender.Send(new GetProductionAdvanceQuery(events[0].LectorRfidId, date), cancellationToken);
+        await productionAdvanceService.AdvanceNotification(response);
+        return Ok(response);
     }
 
     private static DateTime ToUtc(DateTime value) => value.Kind switch

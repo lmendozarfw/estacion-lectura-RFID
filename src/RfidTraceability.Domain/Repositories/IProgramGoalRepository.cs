@@ -29,4 +29,9 @@ public interface IProgramGoalRepository : IRepository<ProgramGoal>
         Guid programId,
         Guid controlPointId,
         CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<ProgramGoal>> ListByControlPointAndDateAsync(
+        Guid controlPointId,
+        DateOnly date,
+        CancellationToken cancellationToken = default);
 }
